@@ -6,8 +6,8 @@ git:
 env:
   global:
     - AWS_DEFAULT_REGION=eu-west-1
-    - secure: somestring
-    - secure: somestring
+    - secure: $ACCESS_KEY
+    - secure: $SECRET_ACCESS_KEY
 
 before_install:
   - echo "Installing AWS CLI"
