@@ -1,0 +1,60 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  HelloworldEBApplication:
+    Type: AWS::ElasticBeanstalk::Application
+    Properties:
+      ApplicationName: "helloworld"
+      Description: "AWS Elastic Beanstalk nodejs Sample Application"
+
+  HelloworldEBConfigurationTemplate:
+    Type: AWS::ElasticBeanstalk::ConfigurationTemplate
+    Properties:
+      ApplicationName:
+        Ref: HelloworldEBApplication
+      Description: "AWS ElasticBeanstalk Sample nodejs Configuration Template"
+      OptionSettings:
+        - Namespace: "aws:autoscaling:asg"
+          OptionName: "MinSize"
+          Value: '2'
+        - Namespace: "aws:autoscaling:asg"
+          OptionName: "MaxSize"
+          Value: '6'
+        - Namespace: "aws:elasticbeanstalk:environment"
+          OptionName: "EnvironmentType"
+          Value: "LoadBalanced"
+        - Namespace: "aws:autoscaling:launchconfiguration"
+          OptionName: "IamInstanceProfile"
+          Value: !Ref MyInstanceProfile
+      SolutionStackName: "64bit Amazon Linux 2 v5.4.4 running Node.js 14"
+
+  HelloworldEBEnvironment:
+    Type: AWS::ElasticBeanstalk::Environment
+    Properties:
+      ApplicationName:
+        Ref: HelloworldEBApplication
+      Description: "AWS ElasticBeanstalk Sample nodejs Environment"
+      TemplateName:
+        Ref: HelloworldEBConfigurationTemplate
+
+  MyInstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Description: "Beanstalk EC2 role"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier
+        - arn:aws:iam::aws:policy/AWSElasticBeanstalkMulticontainerDocker
+        - arn:aws:iam::aws:policy/AWSElasticBeanstalkWorkerTier
+  MyInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref MyInstanceRole
