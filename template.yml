@@ -48,7 +48,7 @@ Resources:
               Service:
                 - ec2.amazonaws.com
             Action:
-              - sts:AssumeRole
+              - 'sts:AssumeRole'
       Description: "Beanstalk EC2 role"
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier

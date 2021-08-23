@@ -25,6 +25,7 @@ deploy:
   region: "us-east-1"
   template: template.yml
   stack_name: tikal-eb
+  capabilities: "CAPABILITY_NAMED_IAM"
   edge: true # opt in to dpl v2
   on:
     branch: main
