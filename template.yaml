@@ -32,6 +32,7 @@ Resources:
     Properties:
       ApplicationName:
         Ref: HelloworldEBApplication
+      EnvironmentName: "Helloworld-env"
       Description: "AWS ElasticBeanstalk Sample nodejs Environment"
       TemplateName:
         Ref: HelloworldEBConfigurationTemplate
